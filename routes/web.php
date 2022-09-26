@@ -47,9 +47,11 @@ Route::prefix('/dashboard')->middleware('auth')->group(function () {
 
     Route::resource('/advising', StudentAdvisingController::class)->names(['index' => 'advising', 'store' => 'advisingPost']);
 
-    Route::resource('/rolesNpermission', RolesNPermissionsController::class);
-
-    Route::post('/rolesNpermission/store', [RolesNPermissionsController::class, 'storePermission'])->name('addPermission');
+    // Protected Route
+    Route::group(['middleware' => ['role:super-admin|write']], function () {
+        Route::resource('/rolesNpermission', RolesNPermissionsController::class);
+        Route::post('/rolesNpermission/store', [RolesNPermissionsController::class, 'storePermission'])->name('addPermission');
+    });
 });
 
 
