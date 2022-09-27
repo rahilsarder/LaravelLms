@@ -30,10 +30,18 @@
                     <x-nav-link :href="route('attendance')" :active="request()->routeIs('attendance')">
                         {{ __('Attendance') }}
                     </x-nav-link>
-
+                    
+                    @if (Auth::user()->hasAnyRole(['Super Admin', 'write']))
                     <x-nav-link :href="route('rolesNpermission.index')" :active="request()->routeIs('rolesNpermission')">
-                        {{ __('rolesNpermission') }}
+                        {{ __('RolesNpermission') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('register_user.index')" :active="request()->routeIs('register_user')">
+                        {{ __('RegisterUser') }}
+                    </x-nav-link>
+                        
+                    @else
+                        
+                    @endif
                     
                     <div class="dropdown">
                         <button class="btn btn-light dropdown-toggle mt-3" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

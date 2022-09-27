@@ -7,6 +7,7 @@ use App\Http\Controllers\RolesNPermissionsController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\StudentAdvisingController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\UserRegistrationController;
 use App\Models\Section;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -48,10 +49,11 @@ Route::prefix('/dashboard')->middleware('auth')->group(function () {
     Route::resource('/advising', StudentAdvisingController::class)->names(['index' => 'advising', 'store' => 'advisingPost']);
 
     // Protected Route
-    Route::group(['middleware' => ['role:super-admin|write']], function () {
+    Route::group(['middleware' => ['role:Super Admin|write']], function () {
         Route::resource('/rolesNpermission', RolesNPermissionsController::class);
         Route::post('/rolesNpermission/store', [RolesNPermissionsController::class, 'storePermission'])->name('addPermission');
     });
+    Route::resource('/register_user', UserRegistrationController::class);
 });
 
 
