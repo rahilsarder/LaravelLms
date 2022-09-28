@@ -32,11 +32,15 @@
                     </x-nav-link>
                     
                     @if (Auth::user()->hasAnyRole(['Super Admin', 'write']))
-                    <x-nav-link :href="route('rolesNpermission.index')" :active="request()->routeIs('rolesNpermission')">
+                    <x-nav-link :href="route('rolesNpermission.index')" :active="request()->routeIs('rolesNpermission.index')">
                         {{ __('RolesNpermission') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('register_user.index')" :active="request()->routeIs('register_user')">
+                    <x-nav-link :href="route('register_user.index')" :active="request()->routeIs('register_user.index')">
                         {{ __('RegisterUser') }}
+                    </x-nav-link>
+                        
+                    <x-nav-link :href="route('department.index')" :active="request()->routeIs('department.index')">
+                        {{ __('Department') }}
                     </x-nav-link>
                         
                     @else

@@ -24,12 +24,14 @@
                                     {{ __('All courses') }}
                                 </p>
                             </div>
-                        </div>                        
-
+                        </div> 
+                            
+                        
                     </div>
-
+                                         
+                    
                     <div class="mt-3 pt-2">
-
+                        
                         <table class="table table-borderless">
                             <thead>
                               <tr>

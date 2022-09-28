@@ -22,6 +22,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'isFaculty',
+        'isChairman'
     ];
 
     /**
@@ -51,5 +53,9 @@ class User extends Authenticatable
     public function userInfo()
     {
         return $this->hasOne(UserInfo::class);
+    }
+    public function faculty()
+    {
+        return $this->hasOne(FacultyInfo::class)->with('major');
     }
 }

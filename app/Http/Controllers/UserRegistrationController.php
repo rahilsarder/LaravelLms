@@ -2,17 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
 use App\Models\Curriculumns;
+use App\Models\Department;
+use App\Models\FacultyInfo;
 use App\Models\Semester;
 use App\Models\User;
 use App\Models\UserInfo;
+use App\Traits\GenerateFacultyID;
+use App\Traits\GenerateShortFormFaculty;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Traits\GenerateStudentID;  ///    ******Used a custom trait!!!!!*****   /////
 
 class UserRegistrationController extends Controller
 {
-    use GenerateStudentID;
+    use GenerateStudentID, GenerateShortFormFaculty, GenerateFacultyID;
     /**
      * Display a listing of the resource.
      *
@@ -20,7 +25,7 @@ class UserRegistrationController extends Controller
      */
     public function index()
     {
-        $users = User::with('userInfo')->get();
+        $users = User::with(['userInfo', 'faculty'])->get();
 
         $roles = Role::get();
 
@@ -55,11 +60,13 @@ class UserRegistrationController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => bcrypt($request->password)
+            'password' => bcrypt($request->password),
+            'isFaculty' => 0,
+            'isChairman' => 0
         ]);
 
 
-        $user_info = UserInfo::create([
+        UserInfo::create([
             'curriculum_name' => $curriculumn->name,
             'user_id' => $user->id,
             'student_id' => $this->generate($request, $semester, $curriculumn->curriculumn_id),
@@ -77,6 +84,44 @@ class UserRegistrationController extends Controller
         $user->assignRole('Student');
 
         return back()->with('success', 'Successfully Added the User');
+    }
+
+    public function faculty()
+    {
+        $faculties = User::with('faculty')
+            ->where('isFaculty', 1)
+            ->get();
+
+        $courses = Course::all();
+
+        $departments = Department::all();
+
+        return view('registration.faculty', compact('faculties', 'courses', 'departments'));
+    }
+
+    public function storeFaculty(Request $request)
+    {
+        $major = Course::find($request->major_course);
+        $department = Department::find($request->department);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'isFaculty' => 1,
+            'isChairman' => 0
+        ]);
+
+        FacultyInfo::create([
+            'user_id' => $user->id,
+            'full_name' => $request->name,
+            'faculty_id' => $this->generateFacultyId($major, $department),
+            'major_course' => $request->major_course,
+            'short_form' => $this->generateShortForm($request),
+            'department' => $request->department
+        ]);
+
+        return back()->with('success', 'Successfully created a Faculty record');
     }
 
     /**

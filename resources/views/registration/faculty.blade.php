@@ -43,7 +43,7 @@
                             </div>
                         </div>                        
                         <button type='button' data-toggle='modal' data-target='#exampleModalCenter' class="btn btn-danger">Add User</button>
-                                    <form action="{{ route('register_user.store') }}" method="POST">
+                                    <form action="{{ route('registerFaculty') }}" method="POST">
                                       @csrf
                                       <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -58,19 +58,26 @@
                                                 <div class="form-group">
                                                     <label for="exampleInputName">Full Name</label>
                                                     <input type="text" class="form-control" id="name" name='name' aria-describedby="nameHelp" placeholder="Enter name">
-                                                    <label for="exampleInputEmail1">Email</label>
-                                                    <input type="email" class="form-control" id="email" name='email' aria-describedby="emailHelp" placeholder="Enter Email">
-                                                    <label for="exampleInputPassword">Password</label>
-                                                    <input type="password" class="form-control" id="password" name='password' placeholder="Enter Password">
-                                                    <select class="form-select" aria-label="Default select example" id="curriculumn" name="curriculumn">
-                                                        <option selected>Select Curriculumn</option>
-                                                        @foreach ($curriculums as $curriculum)
-                                                        <option value="{{ $curriculum->id }}">{{ $curriculum->name }}</option>
+                                                    
+                                                    <label for="exampleInputName">Email</label>
+                                                    <input type="email" class="form-control" id="email" name='email' aria-describedby="emailHelp" placeholder="Enter email">
+                                                    
+                                                    <label for="exampleInputName">Password</label>
+                                                    <input type="password" class="form-control" id="password" name='password' placeholder="Enter password">
+                                                    <br>
+                                                    <select class="form-select my-2" aria-label="Default select example" id="major_course" name="major_course">
+                                                        <option selected>Select Course</option>
+                                                        @foreach ($courses as $course)
+                                                        <option value="{{ $course->id }}">{{ $course->course_id }}</option>
                                                         @endforeach
                                                     </select>
                                                     <br>
-                                                    <label for="exampleInputPassword">Test Pass</label>
-                                                    <input type="number" class="form-control" id="test_pass" name='test_pass' pattern="[0-9]{4}" maxlength="4" placeholder="Enter Test Pass Number">
+                                                    <select class="form-select" aria-label="Default select example" id="department" name="department">
+                                                        <option selected>Select Department</option>
+                                                        @foreach ($departments as $department)
+                                                        <option value="{{ $department->id }}">{{ $department->name }}</option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
@@ -91,25 +98,19 @@
                               <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Full Name</th>
-                                <th scope="col">Student/Faculty ID</th>
-                                <th scope="col">Curriculum Name</th>
-                                <th scope="col">Current CGPA</th>
-                                <th scope="col">Credits Passed</th>
-                                <th scope="col">Probations</th>
+                                <th scope="col">Faculty ID</th>
+                                <th scope="col">Major Courses</th>
                               </tr>
                             </thead>
                             <tbody>
-                                @foreach ($users as $user)
-                                    @if ($user->userInfo)
+                                @foreach ($faculties as $faculty)
+                                    @if ($faculty->faculty)
                                         
                                     <tr>
                                         <th scope="row">{{ $loop->iteration }}</th>
-                                        <td>{{ $user->userInfo->full_name }}</td>
-                                        <td>{{ $user->userInfo->student_id }}</td>
-                                        <td>{{ $user->userInfo->curriculum_name }}</td>
-                                        <td>{{ $user->userInfo->current_cgpa }}</td>
-                                        <td>{{ $user->userInfo->credit_passed }}</td>
-                                        <td>{{ $user->userInfo->probation }}</td>
+                                        <td>{{ $faculty->name }}</td>
+                                        <td>{{ $faculty->faculty->faculty_id }}</td>
+                                        <td>{{ $faculty->faculty->major[0]->course_id }}</td>
                                     </tr>
                                     @else
                                         

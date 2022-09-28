@@ -3,6 +3,7 @@
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\RolesNPermissionsController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\StudentAdvisingController;
@@ -54,6 +55,9 @@ Route::prefix('/dashboard')->middleware('auth')->group(function () {
         Route::post('/rolesNpermission/store', [RolesNPermissionsController::class, 'storePermission'])->name('addPermission');
     });
     Route::resource('/register_user', UserRegistrationController::class);
+    Route::resource('/department', DepartmentController::class);
+    Route::get('/register_faculty', [UserRegistrationController::class, 'faculty'])->name('faculty');
+    Route::post('/register_faculty', [UserRegistrationController::class, 'storeFaculty'])->name('registerFaculty');
 });
 
 

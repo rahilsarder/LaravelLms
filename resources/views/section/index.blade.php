@@ -23,8 +23,14 @@
                                     {{ __('All sections') }}
                                 </p>
                             </div>
-                        </div>                        
-
+                        </div> 
+                            <form action="" method="POST" class="form-outline d-flex justify-between">
+                                @csrf
+                                <input type="search" id="form1" class="form-control" id="search" name="search" placeholder="Search"/>
+                                <button type="button" class="btn btn-primary">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </form>
                     </div>
 
                     <div class="mt-3 pt-2">
